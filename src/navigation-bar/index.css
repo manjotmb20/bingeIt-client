@@ -1,0 +1,31 @@
+.icon {
+    text-align: center;
+    color: white;
+    height: 25px;
+    width: 25px;
+    padding-right: 30px;
+}
+.navbar_main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 30px;
+  }
+  
+  
+  .nav_items {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-grow: 1;
+    color: white;
+  }
+  
+  .right_icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+  }
+  
