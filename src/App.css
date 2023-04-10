@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+.movie-wrapper {
+  margin-top: 20px; /* Adjust the value to the desired space */
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
