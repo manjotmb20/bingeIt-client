@@ -1,20 +1,39 @@
-import React from "react";
-import "./index.css"
+import React, { useState } from "react";
+import "./index.css";
 
-export const ProfileDropdown = ({ profiles }) => {
-    return (
-      <div className="dropdown profile-dropdown">
-        <div>
-          <ul>
-            {profiles.map((profile) => (
-              <li key={profile.id}>
-                <img src={profile.avatar} alt={profile.name} />
-                {profile.name}
-              </li>
-            ))}
-          </ul>
-          <button>Sign Out</button>
-        </div>
-      </div>
-    );
+const ProfileDropdown = ({ profiles }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsOpen(!isOpen);
   };
+
+  const handleSignOut = () => {
+    console.log("Sign out clicked");
+  };
+
+  const handleAccount = () => {
+
+  }
+
+  return (
+    <div className="profile-dropdown">
+        <ul>
+          {profiles.map((profile) => (
+            <li key={profile.id}>
+              <img src={`../images/${profile.avatar}`} />
+              {profile.name}
+            </li>
+          ))}
+          <li>
+            <div onClick={handleAccount}>Account</div>
+          </li>
+          <li>
+            <div onClick={handleSignOut}>Sign Out</div>
+          </li>
+        </ul>
+    </div>
+  );
+};
+
+export default ProfileDropdown;
