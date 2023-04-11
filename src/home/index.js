@@ -1,47 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getPopularMovies } from "../store";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import SliderComponent from "./SliderComponent";
+import SimpleSliderComponent from "./SimpleSliderComponent"
 import "./index.css";
 
 const HomeComponent = () => {
-  const movies = useSelector((state) => state.bingeit.movies);
-
-  const navigate = useNavigate();
+  const popularmovies = useSelector((state) => state.bingeit.popularmovies);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getPopularMovies());
   }, []);
 
-  const settings = {
-    dots: true,
-    speed: 500,
-    slidesToShow: 8,
-    slidesToScroll: 4
-  };
   return (
-    <>
-      <div className="slider-wrapper">
-        <h2 className="text-white">Popular</h2>
-        <Slider {...settings}>
-         
-          {movies.map((movie) => (
-            <div>
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                style={{ height: "250px", width: "200px" }} // Set the height and width of the image
-              />
-              </div>
-          ))}
-          
-        </Slider>
-      </div>
-    </>
+    <div className="home-slider">
+      <SimpleSliderComponent movies={popularmovies}/>
+      <h2 className="text-white">What's Popular</h2>
+      <SliderComponent movies={popularmovies} />
+      <h2 className="text-white">Trending This Week</h2>
+      <SliderComponent movies={popularmovies} />
+      <h2 className="text-white">Top 10 TV Shows Today</h2>
+      <SliderComponent movies={popularmovies} numbering={true}/>
+      <h2 className="text-white">New Releases</h2>
+      <SliderComponent movies={popularmovies} />
+      <h2 className="text-white">My List</h2>
+      <SliderComponent movies={popularmovies} />
+      <h2 className="text-white">Action & Adventure</h2>
+      <SliderComponent movies={popularmovies} />
+      <h2 className="text-white">Romantic Favorites</h2>
+      <SliderComponent movies={popularmovies} />
+    </div>
   );
 };
 

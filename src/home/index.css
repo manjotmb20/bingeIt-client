@@ -1,3 +1,16 @@
 .text-white {
     color: white;
 }
+
+.home-slider {
+    margin-left: 30px;
+    margin-right: 20px;
+}
+
+.item {
+    display: flex;
+}
+  
+  
+  
+  

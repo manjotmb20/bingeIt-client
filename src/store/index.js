@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 
 const initialState = {
-  movies: [],
+  popularmovies: [],
   genresLoaded: false,
   genres: [],
 };
@@ -41,7 +41,7 @@ const BingeItSlice = createSlice({
       state.genresLoaded = true;
     });
     builder.addCase(getPopularMovies.fulfilled, (state, action) => {
-      state.movies = action.payload;
+      state.popularmovies = action.payload;
     });
   },
 });
