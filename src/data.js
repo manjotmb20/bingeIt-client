@@ -23,17 +23,17 @@ export const notifications = [
     {
       id: 1,
       name: "John",
-      avatar: "https://example.com/avatar1.jpg",
+      avatar: "yellow-profile.png",
     },
     {
       id: 2,
       name: "Jane",
-      avatar: "https://example.com/avatar2.jpg",
+      avatar: "green-profile.png",
     },
     {
       id: 3,
       name: "Bob",
-      avatar: "https://example.com/avatar3.jpg",
+      avatar: "blue-profile.png",
     },
   ];
   

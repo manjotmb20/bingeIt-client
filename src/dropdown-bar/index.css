@@ -35,19 +35,6 @@
     border-bottom: 1px solid #ffffff;
 }
 
-/* Style for the profile dropdown item */
-.profile-dropdown li {
-    display: flex;
-    align-items: center;
-}
-
-.profile-dropdown li img {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    border-radius: 50%;
-}
-
 /* Style for the dropdown button */
 .dropdown-body button {
     display: block;
@@ -83,3 +70,43 @@
 .notification-content {
      display: flex;
 }
+
+/* Style for the dropdown container */
+.profile-dropdown {
+    position: relative;
+  }
+  
+  /* Style for the dropdown content */
+  .profile-dropdown ul {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    width: 150px;
+    z-index: 1;
+    color: white;
+  }
+  
+  /* Style for the dropdown list item */
+  .profile-dropdown li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px;
+    color: white;
+  }
+  
+  /* Style for the dropdown list item image */
+  .profile-dropdown li img {
+    /* border-radius: 50%; */
+    height: 50px;
+    margin-right: 5px;
+    width: 50px;
+    display: inline-block;
+  }
+  

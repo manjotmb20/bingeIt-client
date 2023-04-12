@@ -8,7 +8,7 @@ import {
 import "./index.css";
 import SearchBar from "./search-bar";
 import {NotificationDropdown} from "../dropdown-bar/notification";
-import {ProfileDropdown} from "../dropdown-bar/profile";
+import ProfileDropdown from "../dropdown-bar/profile";
 import {profiles, notifications} from '../data'
 
 const NavigationBar = () => {
