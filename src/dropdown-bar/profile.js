@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 
-const ProfileDropdown = ({ profiles }) => {
+const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -19,12 +19,6 @@ const ProfileDropdown = ({ profiles }) => {
   return (
     <div className="profile-dropdown">
         <ul>
-          {profiles.map((profile) => (
-            <li key={profile.id}>
-              <img src={`../images/${profile.avatar}`} />
-              {profile.name}
-            </li>
-          ))}
           <li>
             <div onClick={handleAccount}>Account</div>
           </li>
