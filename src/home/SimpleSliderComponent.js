@@ -19,7 +19,7 @@ const SimpleSliderComponent = ({ movies }) => {
   return (
     <>
       <div className="slider-wrapper">
-        <Slider {...settings}>
+        <Slider {...settings} arrows={false}>
           {movies.map((movie) => (
             <div>
               <img

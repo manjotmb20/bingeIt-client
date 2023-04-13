@@ -7,10 +7,45 @@
     margin-right: 20px;
 }
 
-.item {
-    display: flex;
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
 }
-  
-  
-  
-  
+
+
+.buttons-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.play-button,
+.info-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.play-button:hover,
+.info-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.play-button i,
+.info-button i {
+  margin-right: 5px;
+}

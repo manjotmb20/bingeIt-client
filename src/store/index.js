@@ -7,8 +7,10 @@ import axios from "axios";
 
 const initialState = {
   popularmovies: [],
+  trending: [],
+  latest: {},
   genresLoaded: false,
-  genres: [],
+  genres: []
 };
 
 export const getGenres = createAsyncThunk("bingeit/genres", async () => {
@@ -32,6 +34,30 @@ export const getPopularMovies = createAsyncThunk(
   }
 );
 
+export const getTrendingThisWeek = createAsyncThunk(
+  "bingeit/trending",
+  async () => {
+    const {
+      data: { results },
+    } = await axios.get(
+      "https://api.themoviedb.org/3/trending/tv/week?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US&page=1"
+    );
+    return results;
+  }
+);
+
+export const getLatest = createAsyncThunk(
+  "bingeit/latest",
+  async () => {
+    const {
+      data: { results },
+    } = await axios.get(
+      "https://api.themoviedb.org/3/trending/all/day?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US"
+    );
+    return results;
+  }
+);
+
 const BingeItSlice = createSlice({
   name: "bingeit",
   initialState,
@@ -40,8 +66,14 @@ const BingeItSlice = createSlice({
       state.genres = action.payload;
       state.genresLoaded = true;
     });
+    builder.addCase(getLatest.fulfilled, (state, action) => {
+      state.latest = action.payload[0];
+    });
     builder.addCase(getPopularMovies.fulfilled, (state, action) => {
       state.popularmovies = action.payload;
+    });
+    builder.addCase(getTrendingThisWeek.fulfilled, (state, action) => {
+      state.trending = action.payload;
     });
   },
 });
