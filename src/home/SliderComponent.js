@@ -3,6 +3,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.css";
+import { Link } from "react-router-dom";
+
 
 const SliderComponent = ({movies}) => {
   const settings = {
@@ -42,14 +44,14 @@ const SliderComponent = ({movies}) => {
     <>
       <div className="slider-wrapper">
         <Slider {...settings}>
-          {movies.map((movie) => (
-            <div>
+          {movies.map((movie,index) => (
+              <Link key={index} to={`/details/${movie.id}`}>
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
                 style={{ height: "250px", width: "200px" }} // Set the height and width of the image
               />
-            </div>
+            </Link>
           ))}
         </Slider>
       </div>

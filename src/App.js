@@ -16,7 +16,7 @@ function App() {
         <Routes>
             <Route path="/" element={<HomeComponent/>} />
             <Route path="/about" element={<h1>About</h1>} />
-            <Route path="/details/:id" element={<div className="movie-wrapper"><Movie /></div>} />
+            <Route path="/details/:id" element={<Movie />} />
         </Routes>
         </Router>
     </>  
