@@ -11,12 +11,14 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { CircularProgress } from "@mui/material";
 import CircularRate from "./CircularRate";
+import queryString from "query-string";
 
 
 
 import CastSlide from "./CastSlide";
 import Container from "./Container";
 import RecommendSlide from "./RecommendSlide";
+import MediaReview from "./MediaReview";
 
 
 import { LoadingButton } from "@mui/lab";
@@ -36,6 +38,11 @@ const Movie = () => {
 
     const [recommendations, setRecommendations] = useState([]);
 
+    const [reviews, setReviews] = useState([]);
+
+
+
+
 
 
 
@@ -47,8 +54,7 @@ const Movie = () => {
 
     const { id } = useParams()
 
-    console.log(id)
-    console.log(media)
+
 
 
     useEffect(() => {
@@ -57,8 +63,25 @@ const Movie = () => {
             getGenres();
             getCasts();
             getRecommendations();
+            getReviews();
             window.scrollTo(0,0)
         }, [id])
+
+
+   const getReviews = () => {
+
+    fetch(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
+                                        .then((res) => res.json())
+                                        .then((data) => {
+                                            const reviews = data.results.splice(0, 10);
+
+
+                                            setReviews(reviews);
+                                        } );
+
+   }
+
+
 
 
    const getRecommendations = () => {
@@ -84,10 +107,10 @@ const Movie = () => {
                             });
    }
 
-   console.log("dsddssd")
-       console.log(recommendations.length)
 
-   console.log(genres)
+   console.log(reviews)
+
+
 
 
 
@@ -279,6 +302,10 @@ const Movie = () => {
                           </Box>
                           </Box>
                           {/* media content */}
+
+                        {/* media reviews */}
+                        <MediaReview reviews={reviews} media={media} mediaType={"movie"} />
+                        {/* media reviews */}
 
                           {/* media recommendation */}
                       <Container header="you may also like">
