@@ -1,36 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getPopularMovies, getLatest } from "../store";
+import { getPopularMovies, getLatest, getTrailer } from "../store";
 import SliderComponent from "./SliderComponent";
-import "./index.css";
+import "./index.css"; //kaizer
 
 const HomeComponent = () => {
-  const popularmovies = useSelector((state) => state.bingeit.popularmovies);
   const dispatch = useDispatch();
   const latestMovie = useSelector((state) => state.bingeit.latest);
-  const [trailer, setTrailer] = useState(null);
-  const getTrailer = () => {
-    fetch(
-      `https://api.themoviedb.org/3/movie/${latestMovie.id}/videos?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const ytTrailer = data.results.find(
-          (video) => video.site === "YouTube" && video.type === "Trailer"
-        );
-        if (ytTrailer) {
-          setTrailer(ytTrailer.key);
-        }
-      });
-  };
+  const trailer = useSelector((state) => state.bingeit.trailer);
+  const latestMovieLoaded = useSelector((state) => state.bingeit.trailerLoaded);
+  const popularmovies = useSelector((state) => state.bingeit.popularmovies);
   useEffect(() => {
     dispatch(getLatest());
-    getTrailer();
     dispatch(getPopularMovies());
-  }, [latestMovie,trailer]);
+  }, [latestMovie]);
+
+  useEffect(() => {
+    dispatch(getTrailer(latestMovie.id));
+  }, [latestMovieLoaded]);
   return (
     <div className="home-slider">
-      {latestMovie && (
+      {latestMovieLoaded && (
         <div className="video-container">
           <div className="buttons-container">
             <a href="/play" className="play-button">
@@ -44,7 +34,7 @@ const HomeComponent = () => {
             title="trailer"
             width="100%"
             height="100%"
-            src={`https://www.youtube.com/embed/${trailer}?autoplay=1`}
+            src={`https://www.youtube.com/embed/${trailer.key}?autoplay=1`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           ></iframe>

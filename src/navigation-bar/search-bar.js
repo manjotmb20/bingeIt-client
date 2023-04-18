@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { getSearchResults } from "../store";
 import "./index.css";
 
 const SearchBar = () => {
+  const dispatch = useDispatch();
   const [query, setQuery] = useState("");
 
   const handleQueryChange = (event) => {
@@ -13,7 +17,8 @@ const SearchBar = () => {
   const handleSearch = (event) => {
     event.preventDefault();
     // Handle search logic here
-    console.log(`Searching for "${query}"`);
+    console.log("hey")
+    dispatch(getSearchResults(query));
   };
 
   return (
@@ -26,9 +31,9 @@ const SearchBar = () => {
           onChange={handleQueryChange}
           className="search-input"
         />
-        <button type="submit" className="search-button">
-          <FontAwesomeIcon icon={faSearch}/>
-        </button>
+        <Link to={`/search`} className="search-button">
+          <FontAwesomeIcon icon={faSearch} />
+        </Link>
       </div>
     </form>
   );
