@@ -8,7 +8,6 @@ import axios from "axios";
 const initialState = {
   popularmovies: [],
   trending: [],
-  searchResults: [],
   latest: {},
   trailer: null,
   trailerLoaded: false,
@@ -60,17 +59,17 @@ export const getLatest = createAsyncThunk(
   }
 );
 
-export const getSearchResults = createAsyncThunk(
-  "bingeit/searchResults",
-  async (query) => {
-    const {
-      data: { results },
-    } = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`
-    );
-    return results;
-  }
-);
+// export const getSearchResults = createAsyncThunk(
+//   "bingeit/searchResults",
+//   async (query) => {
+//     const {
+//       data: { results },
+//     } = await axios.get(
+//       `https://api.themoviedb.org/3/search/movie?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`
+//     );
+//     return results;
+//   }
+// );
 
 export const getTrailer = createAsyncThunk(
   "bingeit/trailer",
@@ -105,9 +104,6 @@ const BingeItSlice = createSlice({
     });
     builder.addCase(getTrendingThisWeek.fulfilled, (state, action) => {
       state.trending = action.payload;
-    });
-    builder.addCase(getSearchResults.fulfilled, (state, action) => {
-      state.searchResults = action.payload;
     });
   },
 });

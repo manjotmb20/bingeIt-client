@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { getSearchResults } from "../store";
 import "./index.css";
 
 const SearchBar = () => {
-  const dispatch = useDispatch();
   const [query, setQuery] = useState("");
-
+  const navigate = useNavigate();
   const handleQueryChange = (event) => {
     setQuery(event.target.value);
   };
@@ -17,8 +14,10 @@ const SearchBar = () => {
   const handleSearch = (event) => {
     event.preventDefault();
     // Handle search logic here
-    console.log("hey")
-    dispatch(getSearchResults(query));
+    console.log(query)
+    const searchParams = new URLSearchParams({ query });
+    navigate(`/search?${searchParams.toString()}`);
+    
   };
 
   return (
@@ -31,9 +30,9 @@ const SearchBar = () => {
           onChange={handleQueryChange}
           className="search-input"
         />
-        <Link to={`/search`} className="search-button">
+        <button className="search-button">
           <FontAwesomeIcon icon={faSearch} />
-        </Link>
+        </button>
       </div>
     </form>
   );

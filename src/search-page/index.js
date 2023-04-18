@@ -1,13 +1,22 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from 'react-router-dom';
 import "./index.css";
 
 const SearchPage = () => {
-  const searchResults = useSelector((state) => state.bingeit.searchResults);
+  const [searchParams] = useSearchParams();
+  const [searchResults, setSearchResults] = useState([]);
+  const query = searchParams.get("query"); 
+  useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`)
+    .then((res) => res.json())
+    .then((data) => {
+        setSearchResults(data.results)
+    });
+  }, []);
   console.log(searchResults)
   return (
     <div className="search-page">
-        <h2 className="movie-title">hi</h2>
+      <h2 className="movie-title">hi</h2>
       <div className="movie-grid">
         {searchResults.map((movie) => (
           <div key={movie.id} className="movie-card">
