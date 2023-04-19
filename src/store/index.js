@@ -9,7 +9,8 @@ const initialState = {
   popularmovies: [],
   trending: [],
   latest: {},
-  genresLoaded: false,
+  trailer: null,
+  trailerLoaded: false,
   genres: []
 };
 
@@ -58,16 +59,45 @@ export const getLatest = createAsyncThunk(
   }
 );
 
+// export const getSearchResults = createAsyncThunk(
+//   "bingeit/searchResults",
+//   async (query) => {
+//     const {
+//       data: { results },
+//     } = await axios.get(
+//       `https://api.themoviedb.org/3/search/movie?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`
+//     );
+//     return results;
+//   }
+// );
+
+export const getTrailer = createAsyncThunk(
+  "bingeit/trailer",
+  async (movieid) => {
+    const {
+      data: { results },
+    } = await axios.get(
+      `https://api.themoviedb.org/3/movie/${movieid}/videos?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`
+    );
+    return results.find(
+      (video) => video.site === "YouTube" && video.type === "Trailer"
+    );
+  }
+);
+
 const BingeItSlice = createSlice({
   name: "bingeit",
   initialState,
   extraReducers: (builder) => {
     builder.addCase(getGenres.fulfilled, (state, action) => {
       state.genres = action.payload;
-      state.genresLoaded = true;
     });
     builder.addCase(getLatest.fulfilled, (state, action) => {
       state.latest = action.payload[0];
+    });
+    builder.addCase(getTrailer.fulfilled, (state, action) => {
+      state.trailerLoaded = true
+      state.trailer = action.payload;
     });
     builder.addCase(getPopularMovies.fulfilled, (state, action) => {
       state.popularmovies = action.payload;
