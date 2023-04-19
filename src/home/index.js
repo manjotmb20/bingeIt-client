@@ -17,8 +17,7 @@ const HomeComponent = () => {
 
   useEffect(() => {
     dispatch(getTrailer(latestMovie.id));
-  }, [latestMovieLoaded]);
-  console.log(trailer)
+  }, [latestMovieLoaded, latestMovie]);
   return (
     <div className="home-slider">
       {latestMovieLoaded && (
