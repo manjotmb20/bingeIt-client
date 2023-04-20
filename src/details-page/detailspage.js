@@ -7,122 +7,262 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import  { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import FavoriteIcon from "@mui/icons-material/Favorite";
+
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { CircularProgress } from "@mui/material";
 import CircularRate from "./CircularRate";
 import queryString from "query-string";
+import { toast } from "react-toastify";
 
 
+import YouTube from 'react-youtube';
 
+import { addFavorite, removeFavorite } from "./userSlice";
 import CastSlide from "./CastSlide";
 import Container from "./Container";
 import RecommendSlide from "./RecommendSlide";
 import MediaReview from "./MediaReview";
+import favoriteApi from "./api/favorite.api";
 
+import mediaApi from "./api/media.api";
+import reviewApi from "./api/review.api";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Chip, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Dialog, Stack, Typography } from "@mui/material";
 
 
 const Movie = () => {
+
+
+
+    const newUser = {
+            displayName: "manjot1111",
+            id: "643d9a4bc7505a8c239555c6",
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjQzZDlhNGJjNzUwNWE4YzIzOTU1NWM2IiwiaWF0IjoxNjgxNzY3ODQyLCJleHAiOjE2ODE4NTQyNDJ9.KYczeUXCdTDKpuaM4e2M00E-4YpgbEOaIykMCNZroGU",
+            username: "manjot1111",
+            _id: "643d9a4bc7505a8c239555c6",
+          };
+
+        const [user, setUser] = useState(newUser);
+
+            console.log("user")
+            console.log(user)
+
+            const [listFavorites,setFavourites] = useState([])
+
+
+
 
     const [media, setMovie] = useState()
     const [trailer, setTrailer] = useState(null);
     const [showTrailerModal, setShowTrailerModal] = useState(false);
     const [genres, setGenres] = useState([]);
     const [onRequest, setOnRequest] = useState(false);
+    const [showVideo, setShowVideo] = useState(false);
+
+
     const [isFavorite, setIsFavorite] = useState(false);
     const [casts, setCasts] = useState([]);
     const videoRef = useRef(null);
 
     const [recommendations, setRecommendations] = useState([]);
 
-    const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState();
 
-
-
-
-
-
-
-
-
-
+      const dispatch = useDispatch();
 
 
 
     const { id } = useParams()
 
+    const mediaType = "movie";
+
+    console.log("id-video")
+    console.log(videoRef)
+
+
+
+
+
+
+
+
 
 
 
     useEffect(() => {
-            getData()
+
+
+
+            window.scrollTo(0,0)
+            const getMedia = async () => {
+
+                  const { response, err } = await mediaApi.getDetail({ mediaType, id });
+
+
+                  if (err) {
+                  console.log("err");
+                  }
+
+                  if (response) {
+
+                            console.log("MediaDetail : " , response);
+
+                    setMovie(response);
+                    setIsFavorite(response.isFavorite);
+                    setGenres(response.genres.splice(0, 2));
+                  }
+
+                  if (err) toast.error(err.message);
+                };
+
+
+                const getReviews = async () => {
+
+                    console.log("reviews")
+                    console.log(id)
+                    const { response, err } = await mediaApi.getReviews({ mediaType, id });
+                    console.log("reviews",response)
+                    if (err) toast.error(err.message);
+                    if (response) setReviews(response);
+                }
+
+                const getRecommendations = async () => {
+                    const { response, err } = await mediaApi.getRecommendations({ mediaType, id });
+                    if (err) toast.error(err.message);
+                    if (response) setRecommendations(response);
+                }
+
+                const getCasts = async () => {
+                    const { response, err } = await mediaApi.getCredits({ mediaType, id });
+                    if (err) toast.error(err.message);
+                    if (response) setCasts(response.cast);
+                }
+
+                const getTrailer = async () => {
+                    const { response, err } = await mediaApi.getVideos({ mediaType, id });
+
+                    const ytTrailer = response.results.find(
+                                            (video) => video.site === 'YouTube' && video.type === 'Trailer'
+                                        );
+                                        if (ytTrailer) {
+                                            setTrailer(ytTrailer.key);
+                                        }
+                    if (err) toast.error(err.message);
+                }
+
+            window.scrollTo(0, 0);
+            getMedia();
             getTrailer();
-            getGenres();
             getCasts();
             getRecommendations();
             getReviews();
-            window.scrollTo(0,0)
-        }, [id])
 
-
-   const getReviews = () => {
-
-    fetch(`https://api.themoviedb.org/3/movie/${id}/reviews?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
-                                        .then((res) => res.json())
-                                        .then((data) => {
-                                            const reviews = data.results.splice(0, 10);
-
-
-                                            setReviews(reviews);
-                                        } );
-
-   }
+        }, [id, dispatch])
 
 
 
 
-   const getRecommendations = () => {
 
-        fetch(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
-                                    .then((res) => res.json())
-                                    .then((data) => {
-                                        const recommendations = data.results.splice(0, 10);
-                                        console.log(recommendations)
+        try {
+        console.log("media1234",trailer)
+        } catch (error) {
 
-                                        setRecommendations(recommendations);
-                                    } );
-   }
 
-   const getGenres = () => {
+        }
+        console.log("user: ", user)
 
-            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
-                            .then((res) => res.json())
-                            .then((data) => {
-                                const genres = data.genres.splice(0, 3);
 
-                                setGenres(genres);
-                            });
-   }
+
+
+
+
+
+        const onFavoriteClick = async () => {
+
+
+           if (!user) {
+
+                console.log("Please login to add favorite");
+                return;
+
+           }
+           console.log("onrequest: ", onRequest)
+
+            if (onRequest) return;
+
+            if (isFavorite) {
+              onRemoveFavorite();
+              return;
+            }
+
+            setOnRequest(true);
+
+            console.log("onrequest: ", onRequest)
+
+
+            const body = {
+              mediaId: media.id,
+              mediaTitle: media.title || media.name,
+              mediaType: mediaType,
+              mediaPoster: media.poster_path,
+              mediaRate: media.vote_average
+            };
+
+            const { response, err } = await favoriteApi.add(body);
+
+            console.log("in favorite")
+
+
+            setOnRequest(false);
+
+            if (err) toast.error(err.message);
+            if (response) {
+
+
+              dispatch(addFavorite(response));
+              setIsFavorite(true);
+              console.log("Add favorite success");
+            }
+          };
+
+            console.log("onrequest2: ", isFavorite)
+
+            console.log("onrequest1: ", listFavorites)
+
+
+          const onRemoveFavorite = async () => {
+
+
+                              setIsFavorite(false);
+
+//              if (onRequest) return;
+//              setOnRequest(true);
+//
+//              const favorite = listFavorites.find(e => e.mediaId.toString() === media.id.toString());
+//
+//
+//              const { response, err } = await favoriteApi.remove({ favoriteId: favorite.id });
+//
+//              setOnRequest(false);
+//
+//              if (err) toast.error(err.message);
+//              if (response) {
+//                dispatch(removeFavorite(favorite));
+//                setIsFavorite(false);
+//                toast.success("Remove favorite success");
+//              }
+            };
+
+
+
 
 
    console.log(reviews)
+           console.log("Genres: ", genres);
 
 
-
-
-
-   const getCasts = () => {
-    fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
-                               .then((res) => res.json())
-                               .then((data) => {
-                                      const casts = data.cast.splice(0, 10);
-
-                                      setCasts(casts);
-                               } );
-   }
 
 
 
@@ -145,11 +285,14 @@ const Movie = () => {
             }
         };
 
-    const getData = () => {
-            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
-            .then(res => res.json())
-            .then(data => setMovie(data))
-        }
+        const handleClose = () => {
+            setShowVideo(false);
+          };
+
+
+
+
+
 
    return (
        <>
@@ -235,14 +378,14 @@ const Movie = () => {
                     {/* rate */}
                     <Divider orientation="vertical" />
                     {/* genres */}
-                    {genres.map((genre, index) => (
+                    {media.genres && media.genres ? (media.genres.map((genre, index) => (
                       <Chip
                         label={genre.name}
                         variant="filled"
                         color="primary"
                         key={index}
                       />
-                    ))}
+                    ))) : null}
                     {/* genres */}
                   </Stack>
                   {/* rate and genres */}
@@ -272,21 +415,34 @@ const Movie = () => {
                         "& .MuiButon-starIcon": { marginRight: "0" }
                       }}
                       size="large"
-                      startIcon={<FavoriteBorderOutlinedIcon /> }
-                      loadingPosition="start"
-                      loading={onRequest}
+                    startIcon={isFavorite ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
+                    loadingPosition="start"
+                    loading={onRequest}
+                    onClick={onFavoriteClick}
 
                     />
-                    <Button
-                      variant="contained"
-                      sx={{ width: "max-content" }}
-                      size="large"
-                      startIcon={<PlayArrowIcon />}
-                      onClick={playTrailer}
-                    >
-                      Watch now
-                    </Button>
+                     <Button
+                              variant="contained"
+                              sx={{ width: 'max-content' }}
+                              size="large"
+                              startIcon={<PlayArrowIcon />}
+                              onClick={() => setShowVideo(!showVideo)}
+                            >
+                              Watch now
+                            </Button>
                   </Stack>
+                  {showVideo && trailer && (
+                          <YouTube
+                            videoId={trailer}
+                            opts={{
+                              height: '390',
+                              width: '640',
+                              playerVars: {
+                                autoplay: 1,
+                              },
+                            }}
+                          />
+                        )}
                   {/* buttons */}
 
                   {/* cast */}
@@ -304,18 +460,22 @@ const Movie = () => {
                           {/* media content */}
 
                         {/* media reviews */}
-                        <MediaReview reviews={reviews} media={media} mediaType={"movie"} />
+                        {
+                          reviews && reviews ? (
+                            <MediaReview reviews={reviews.results} media={media} mediaType={"movie"} />
+                          ) : null
+                        }
                         {/* media reviews */}
 
                           {/* media recommendation */}
-                      <Container header="you may also like">
-                                  {recommendations.length > 0 && (
-                                    <RecommendSlide medias={recommendations} mediaType={"movie"} />
-                                  )}
+                      {
+                        media && media.recommend && media.recommend.length > 0 ? (
+                          <Container header="you may also like">
+                            <RecommendSlide medias={media.recommend} mediaType={"movie"} />
+                          </Container>
+                        ) : null
+                      }
 
-
-
-                  </Container>
                   {/* media recommendation */}
 
 

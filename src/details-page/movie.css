@@ -10,6 +10,20 @@
     width: 80%;
 }
 
+.custom-text-field {
+  background-color: white;
+  border: 1px solid #ccc;
+}
+
+.custom-text-field .MuiOutlinedInput-input {
+  color: #333;
+}
+
+.custom-text-field .MuiOutlinedInput-notchedOutline {
+  border-color: #ccc;
+}
+
+
 .movie__backdrop {
     width: 100%;
     height: 500px;

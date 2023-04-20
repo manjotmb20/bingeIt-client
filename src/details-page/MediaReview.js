@@ -7,22 +7,21 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import Container from "./Container";
+import reviewApi from "./api/review.api";
+import  {Link}  from "react-router-dom";
 import TextAvatar from "./TextAvatar";
-import reviewApi from "./review.api";
-import {createTuitThunk} from "./services/tuits-thunks";
-import {useDispatch} from "react-redux";
-import queryString from "query-string";
+import './movie.css';
 
+const ReviewItem = ({ review, onRemoved }) => {
+  const newUser = {
+        displayName: "manjot1234",
+        id: "643d9a4bc7505a8c239555c6",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjQzZDlhNGJjNzUwNWE4YzIzOTU1NWM2IiwiaWF0IjoxNjgxNzY3ODQyLCJleHAiOjE2ODE4NTQyNDJ9.KYczeUXCdTDKpuaM4e2M00E-4YpgbEOaIykMCNZroGU",
+        username: "manjot1234",
+        _id: "643d9a4bc7505a8c239555c6",
+      };
 
-
-
-
-
-
-const ReviewItem = ({ review, onRemoved}) => {
-
-  const [user, setUser] = useState({"id":"60f9b1b0b9d1b00015b0b0b1","displayName":"admin","email":""});
-
+        const [user, setUser] = useState(newUser);
 
   const [onRequest, setOnRequest] = useState(false);
 
@@ -36,23 +35,28 @@ const ReviewItem = ({ review, onRemoved}) => {
     if (response) onRemoved(review.id);
   };
 
+  console.log("review")
+
+  console.log(review)
+
   return (
     <Box sx={{
       padding: 2,
       borderRadius: "5px",
-      borderColor: "white",
       position: "relative",
       opacity: onRequest ? 0.6 : 1,
       "&:hover": { backgroundColor: "background.contrast" }
     }}>
       <Stack direction="row" spacing={2}>
         {/* avatar */}
-        <TextAvatar text={review.user.displayName} />
+        <TextAvatar text={user.displayName} />
         {/* avatar */}
         <Stack spacing={2} flexGrow={1}>
           <Stack spacing={1}>
-            <Typography variant="h6" fontWeight="700">
-              {review.user.displayName}
+            <Typography variant="h6" fontWeight="700" color="white">
+            <Link to={`/profile/${user.id}`} style={{textDecoration: "none", color: "white"}}>
+              {review.author}
+                </Link>
             </Typography>
             <Typography variant="caption">
               {dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")}
@@ -61,7 +65,7 @@ const ReviewItem = ({ review, onRemoved}) => {
           <Typography variant="body1" textAlign="justify">
             {review.content}
           </Typography>
-          {user && user.id === user.id && (
+          {user && user.id === review.id && (
             <LoadingButton
               variant="contained"
               startIcon={<DeleteIcon />}
@@ -84,76 +88,34 @@ const ReviewItem = ({ review, onRemoved}) => {
   );
 };
 
-
 const MediaReview = ({ reviews, media, mediaType }) => {
-  const [user, setUser] = useState({"id":"60f9b1b0b9d1b00015b0b0b1","displayName":"admin","email":""});
+  const newUser = {
+        displayName: "manjot123",
+        id: "643d9a4bc7505a8c239555c6",
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjQzZDlhNGJjNzUwNWE4YzIzOTU1NWM2IiwiaWF0IjoxNjgxNzY3ODQyLCJleHAiOjE2ODE4NTQyNDJ9.KYczeUXCdTDKpuaM4e2M00E-4YpgbEOaIykMCNZroGU",
+        username: "manjot123",
+        _id: "643d9a4bc7505a8c239555c6",
+      };
+
+        const [user, setUser] = useState(newUser);
   const [listReviews, setListReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [page, setPage] = useState(1);
   const [onRequest, setOnRequest] = useState(false);
   const [content, setContent] = useState("");
   const [reviewCount, setReviewCount] = useState(0);
-         const dispatch = useDispatch();
-
 
   const skip = 4;
 
-    console.log("MediaReview");
-  console.log(user);
-
-useEffect(() => {
+  useEffect(() => {
     setListReviews([...reviews]);
     setFilteredReviews([...reviews].splice(0, skip));
     setReviewCount(reviews.length);
   }, [reviews]);
 
-
-
-
-
-
-
-
-      const tuitClickHandler = async () => {
-          const body = {
-            content,
-            mediaId: media.id,
-            mediaType,
-            mediaTitle: media.title || media.name,
-            mediaPoster: media.poster_path
-          };
-
-          console.log("onAddReview-whatshappening");
-          console.log(queryString.stringify(body));
-          console.log("Tuiting: " + "hi-tedt");
-          const newTuit = {
-            tuit: queryString.stringify(body),
-          };
-
-          try {
-            const response = await dispatch(createTuitThunk(newTuit));
-
-            // Check for errors in the response
-            if (response.error) {
-              console.log("Error while adding the post:", response.error);
-              // Handle the error accordingly
-            } else {
-              console.log("Post added successfully:", response);
-              // Perform any desired actions after successfully adding the post
-              setFilteredReviews([...filteredReviews, "hi"]);
-              setReviewCount(reviewCount + 1);
-              setContent("");
-            }
-          } catch (error) {
-            console.log("Error while dispatching the action:", error);
-            // Handle the error accordingly
-          }
-        };
-
-
   const onAddReview = async () => {
-    {/*if (onRequest) return;
-    setOnRequest(true); */}
+    if (onRequest) return;
+    setOnRequest(true);
 
     const body = {
       content,
@@ -163,15 +125,9 @@ useEffect(() => {
       mediaPoster: media.poster_path
     };
 
-    console.log("onAddReview");
-    console.log(body);
-
-    console.log('Authorization Token:', localStorage.getItem('actkn'));
-
-
     const { response, err } = await reviewApi.add(body);
 
-    {/*setOnRequest(false);*/}
+    setOnRequest(false);
 
     if (err) toast.error(err.message);
     if (response) {
@@ -203,58 +159,59 @@ useEffect(() => {
   };
 
   return (
-  <>
-   <Container header={`Reviews (${reviewCount})`}>
-           <Stack spacing={4} marginBottom={2}>
-             {filteredReviews.map((item) => (
-               <Box key={item.id}>
-                 <ReviewItem review={item} onRemoved={onRemoved} />
-                 <Divider sx={{
-                   display: { xs: "block", md: "none" }
-                 }} />
-               </Box>
-             ))}
-             {filteredReviews.length < listReviews.length && (
-               <Button onClick={onLoadMore}>load more</Button>
-             )}
-           </Stack>
-           {user && (
-             <>
-               <Divider />
-               <Stack direction="row" spacing={2}>
-                 <TextAvatar text={user.displayName} />
-                 <Stack spacing={2} flexGrow={1}>
-                   <Typography variant="h6" fontWeight="700">
-                     {user.displayName}
-                   </Typography>
-                   <TextField
-                     value={content}
-                     onChange={(e) => setContent(e.target.value)}
-                     multiline
-                     rows={4}
-                     textColor="white"
-                     backgroundColor="background.contrast"
-                     placeholder="Write your review"
-                     variant="outlined"
-                   />
-                   <LoadingButton
-                     variant="contained"
-                     size="large"
-                     sx={{ width: "max-content" }}
-                     startIcon={<SendOutlinedIcon />}
-                     loadingPosition="start"
-                     loading={onRequest}
-                     onClick={tuitClickHandler}
-                   >
-                     post
-                   </LoadingButton>
-                 </Stack>
-               </Stack>
-             </>
-           )}
-         </Container>
-       </>
+    <>
+      <Container header={`Reviews (${reviewCount})`}>
+        <Stack spacing={4} marginBottom={2}>
+          {filteredReviews.map((item) => (
+            <Box key={item.id}>
+              <ReviewItem review={item} onRemoved={onRemoved} />
+              <Divider sx={{
+                display: { xs: "block", md: "none" }
+              }} />
+            </Box>
+          ))}
+          {filteredReviews.length < listReviews.length && (
+            <Button onClick={onLoadMore}>load more</Button>
+          )}
+        </Stack>
+        {user && (
+          <>
+            <Divider />
+            <Stack direction="row" spacing={2}>
+              <TextAvatar text={user.displayName} />
+              <Stack spacing={2} flexGrow={1}>
+                <Typography variant="h6" fontWeight="700">
+                <Link to={`/profile/${user.id}`} style={{textDecoration: "none", color: "white"}}>
+                    {user.displayName}
+                </Link>
+                </Typography>
+                <TextField
+                  className="custom-text-field"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  multiline
+                  rows={4}
 
+                  placeholder="Write your review"
+                  variant="outlined"
+                />
+                <LoadingButton
+                  variant="contained"
+                  size="large"
+                  sx={{ width: "max-content" }}
+                  startIcon={<SendOutlinedIcon />}
+                  loadingPosition="start"
+                  loading={onRequest}
+                  onClick={onAddReview}
+                >
+                  post
+                </LoadingButton>
+              </Stack>
+            </Stack>
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 

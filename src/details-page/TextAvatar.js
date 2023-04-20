@@ -1,6 +1,9 @@
 import { Avatar } from "@mui/material";
 
 const TextAvatar = ({ text }) => {
+
+  console.log("text")
+  console.log(text.length)
   const stringToColor = (str) => {
     let hash = 0;
     let i;
@@ -26,7 +29,7 @@ const TextAvatar = ({ text }) => {
         width: 40,
         height: 40
       }}
-      children={`${text.split(" ")[0][0]}`}
+      children={`${text}`}
     />
   );
 };

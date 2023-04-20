@@ -1,11 +1,10 @@
-import privateClient from "./private.client";
+import privateClient from "../private.client";
 
 const reviewEndpoints = {
   list: "reviews",
   add: "reviews",
   remove: ({ reviewId }) => `reviews/${reviewId}`
 };
-
 
 const reviewApi = {
   add: async ({
@@ -28,10 +27,7 @@ const reviewApi = {
       );
 
       return { response };
-    } catch (err) {
-
-    console.log("error happend");
-    return { err }; }
+    } catch (err) { return { err }; }
   },
   remove: async ({ reviewId }) => {
     try {
@@ -43,6 +39,8 @@ const reviewApi = {
   getList: async () => {
     try {
       const response = await privateClient.get(reviewEndpoints.list);
+
+
 
       return { response };
     } catch (err) { return { err }; }
