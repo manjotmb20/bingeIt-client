@@ -54,7 +54,7 @@ const NavigationBar = () => {
   };
 
   const handleMyListClick = () => {
-    navigate("/my-list");
+    navigate("/favorites");
   };
 
   const handleBrowseLanguagesClick = () => {
@@ -80,10 +80,7 @@ const NavigationBar = () => {
           News &amp; Popular
         </div>
         <div className="item" onClick={handleMyListClick}>
-          My List
-        </div>
-        <div className="item" onClick={handleBrowseLanguagesClick}>
-          Browse by Languages
+          My Favorites
         </div>
       </div>
       <div className="right-icons">

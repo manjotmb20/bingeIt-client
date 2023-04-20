@@ -50,8 +50,6 @@ const HomeComponent = () => {
       <SliderComponent movies={trending} />
       <h2 className="text-white">Top Rated TV Shows</h2>
       <SliderComponent movies={tvshows} />
-      <h2 className="text-white">My List</h2>
-      <SliderComponent movies={popularmovies} />
     </div>
   );
 };

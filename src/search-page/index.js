@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 const SearchPage = () => {
@@ -43,11 +44,13 @@ const SearchPage = () => {
       <div className="movie-grid">
         {searchResults.map((movie) => (
           <div key={movie.id} className="movie-card">
+            <Link to={`/details/${movie.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
               className="movie-poster"
             />
+            </Link>
             <h2 className="movie-title">{movie.title}</h2>
           </div>
         ))}

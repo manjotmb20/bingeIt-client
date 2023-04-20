@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./index.css";
+import { Link } from "react-router-dom";
+
 
 const BrowsePage = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +19,7 @@ const BrowsePage = () => {
         console.log(data)
         setSearchResults(data.results.filter((movie) => movie.poster_path));
       });
-  }, []);
+  }, [API]);
 
   useEffect(() => {
     fetch(
@@ -27,7 +29,7 @@ const BrowsePage = () => {
       .then((data) => {
         setSearchKeywords(data.results);
       });
-  }, []);
+  }, [query]);
 
   return (
     <div className="search-page">
@@ -45,11 +47,13 @@ const BrowsePage = () => {
       <div className="movie-grid">
         {searchResults.map((movie) => (
           <div key={movie.id} className="movie-card">
+            <Link to={`/details/${movie.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
               className="movie-poster"
             />
+            </Link>
             <h2 className="movie-title">{movie.title}</h2>
           </div>
         ))}
