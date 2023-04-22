@@ -64,4 +64,8 @@
     font-size: large;
   }
   
+  .item:hover {
+    cursor: pointer;
+  }
+  
   

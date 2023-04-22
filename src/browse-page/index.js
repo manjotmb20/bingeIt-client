@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import "./index.css";
+import { Link } from "react-router-dom";
 
-const SearchPage = () => {
+
+const BrowsePage = () => {
   const [searchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
   const query = searchParams.get("query");
+  const NORMAL = `https://api.themoviedb.org/3/${query}/top_rated?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&language=en-US`
+  const COLLECTIONS =  `https://api.themoviedb.org/3/search/multi?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`
+  const API = query === "collection" ? COLLECTIONS : NORMAL
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/search/multi?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`
-    )
+    fetch(API)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setSearchResults(data.results.filter((movie) => movie.poster_path));
       });
-  }, [query]);
+  }, [API]);
 
   useEffect(() => {
     fetch(
@@ -26,8 +29,8 @@ const SearchPage = () => {
       .then((data) => {
         setSearchKeywords(data.results);
       });
-  }, [searchKeywords]);
-  console.log(searchKeywords)
+  }, [query]);
+
   return (
     <div className="search-page">
       {searchKeywords.length > 0 && (
@@ -59,4 +62,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default BrowsePage;

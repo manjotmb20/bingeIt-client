@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getPopularMovies, getLatest, getTrailer } from "../store";
+import { getPopularMovies, getLatest, getTrailer, getTrendingThisWeek, getTopTVShows } from "../store";
 import SliderComponent from "./SliderComponent";
 import "./index.css"; //kaizer
 
@@ -10,9 +10,13 @@ const HomeComponent = () => {
   const trailer = useSelector((state) => state.bingeit.trailer);
   const latestMovieLoaded = useSelector((state) => state.bingeit.trailerLoaded);
   const popularmovies = useSelector((state) => state.bingeit.popularmovies);
+  const trending = useSelector((state) => state.bingeit.trending);
+  const tvshows = useSelector((state) => state.bingeit.tvshows);
   useEffect(() => {
     dispatch(getLatest());
     dispatch(getPopularMovies());
+    dispatch(getTrendingThisWeek());
+    dispatch(getTopTVShows());
   }, [latestMovie]);
 
   useEffect(() => {
@@ -43,11 +47,9 @@ const HomeComponent = () => {
       <h2 className="text-white">What's Popular</h2>
       <SliderComponent movies={popularmovies} />
       <h2 className="text-white">Trending This Week</h2>
-      <SliderComponent movies={popularmovies} />
-      <h2 className="text-white">Top 10 TV Shows Today</h2>
-      <SliderComponent movies={popularmovies} />
-      <h2 className="text-white">My List</h2>
-      <SliderComponent movies={popularmovies} />
+      <SliderComponent movies={trending} />
+      <h2 className="text-white">Top Rated TV Shows</h2>
+      <SliderComponent movies={tvshows} />
     </div>
   );
 };
