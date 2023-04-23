@@ -7,7 +7,7 @@ import HomeComponent from './home';
 import Movie from './details-page/detailspage';
 import FavoriteList from './details-page/FavoriteList';
 import PersonDetail from './details-page/PersonDetail';
-
+import ProfilePage from './profile-page/profilePage';
 
 import {useEffect, useContext, useState} from 'react';
 //components
@@ -54,6 +54,7 @@ const [loading, setLoading] = useState(true);
             <Route path="/details/:id" element={<Movie />} />
             <Route path="/search" element={<SearchPage/>} />
             <Route path="/browse" element={<BrowsePage/>} />
+            <Route path="/profile" element={<ProfilePage/>} />
         </Routes>
         </Router>
         )}
