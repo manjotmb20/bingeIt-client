@@ -13,8 +13,10 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { CircularProgress } from "@mui/material";
 import CircularRate from "./CircularRate";
 import queryString from "query-string";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import { toast } from "react-toastify";
-
+import "react-toastify/dist/ReactToastify.css";
 
 import YouTube from 'react-youtube';
 
@@ -62,6 +64,8 @@ const Movie = () => {
     const [onRequest, setOnRequest] = useState(false);
     const [showVideo, setShowVideo] = useState(false);
     const [listFavorites, setListFavorites] = useState([]);
+      const [openSnackbar, setOpenSnackbar] = useState(false);
+
 
 
     const [isFavorite, setIsFavorite] = useState(false);
@@ -111,7 +115,7 @@ const Movie = () => {
 
                   if (response) {
 
-                            console.log("MediaDetail : " , response);
+                    console.log("MediaDetail : " , response);
 
                     setMovie(response);
                     setGenres(response.genres.splice(0, 2));
@@ -133,7 +137,8 @@ const Movie = () => {
 
                 const getFavorite = async () => {
 
-                    const userId  = user._id;
+                    const userId = user ? user._id : null;
+                    if (!userId) return;
                     console.log("userId in getFavorite ",userId)
                     const { response2, err } = await favoriteApi.getFavoriteList({ userId });
                     console.log("response2",response2)
@@ -173,7 +178,7 @@ const Movie = () => {
                 };
 
                 const getUserReviews = async () => {
-                    const userId = user._id;
+                    const userId = user ? user._id : null;
                     const mediaId = id;
                     const { response, err } = await reviewApi.getList({ mediaType, mediaId });
                     if (err) toast.error(err.message);
@@ -206,7 +211,9 @@ const Movie = () => {
                 }
 
                 const setListFavorites = async () => {
-                    const { response, err } = await favoriteApi.getFavoriteList({ userId: user._id });
+
+                    if (!user) return;
+                    const { response, err } = await favoriteApi.getFavoriteList({ userId: user ? user._id : null });
                     if (err) toast.error(err.message);
                     if (response) setListFavorites(response);
                 }
@@ -238,13 +245,22 @@ const Movie = () => {
 
 
         }
-        console.log("user123 : ", user._id)
+        console.log("user123 : ", user ? user._id : null)
 
 
 
 
 
         console.log("isFavorite-outside", isFavorite);
+
+        function handleSnackbarOpen() {
+          setOpenSnackbar(true);
+        }
+
+        function handleSnackbarClose() {
+          setOpenSnackbar(false);
+        }
+
 
 
         const onFavoriteClick = async () => {
@@ -254,6 +270,18 @@ const Movie = () => {
 
 
            if (!user) {
+
+                handleSnackbarOpen();
+                toast.error("Please login to add favorite", {
+                  style: {
+                    backgroundColor: "#ff5050",
+                    color: "#ffffff",
+                  },
+                });
+
+            toast.error("Please login1 to add favorite", {
+              className: "custom-toast-error",
+            });
 
                 console.log("Please login to add favorite");
                 return;
@@ -275,7 +303,7 @@ const Movie = () => {
 
             const body = {
 
-              userId: user._id,
+              userId: user ? user._id : null,
               mediaId: media.id,
               mediaTitle: media.title || media.name,
               mediaType: mediaType,
@@ -308,31 +336,34 @@ const Movie = () => {
 
 
 
-          const onRemoveFavorite = async () => {
+         const onRemoveFavorite = async () => {
+           if (onRequest) return;
+           setOnRequest(true);
 
+           // Set isFavorite to false immediately when the button is clicked
+           setIsFavorite(false);
 
+           const listFavorites = await favoriteApi.getFavoriteList({ userId: user ? user._id : null });
 
-              if (onRequest) return;
-              setOnRequest(true);
+           // Use Promise.all to remove favorites asynchronously in the background
+           const removePromises = listFavorites.response2.map(async (item) => {
+             if (item.mediaId === id) {
+               console.log("item", item.id);
+               const { response, err } = await favoriteApi.remove({ favoriteId: item.id });
+               if (err) {
+                 console.log("Error removing favorite:", err.message);
+               } else {
+                 console.log("Removed favorite successfully");
+               }
+             }
+           });
 
+           // Wait for all remove favorite actions to finish
+           await Promise.all(removePromises);
 
+           setOnRequest(false);
+         };
 
-              const listFavorites = await favoriteApi.getFavoriteList({ userId: user._id });
-
-//                const favorite = listFavorites.find((item) => item.mediaId === id);
-
-                console.log("favorite in removefavorite: ", listFavorites)
-
-
-                listFavorites.response2.map((item) => {
-                    if (item.mediaId === id) {
-                        console.log("item", item.id)
-                        const { response, err } = favoriteApi.remove({ favoriteId: item.id });
-
-                    }
-                } )
-
-            };
 
 
 
@@ -479,6 +510,16 @@ const Movie = () => {
                     onClick={onFavoriteClick}
 
                     />
+                    <Snackbar
+                          open={openSnackbar}
+                          autoHideDuration={3000}
+                          onClose={handleSnackbarClose}
+                          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        >
+                          <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                            Please log in to add favorite
+                          </Alert>
+                        </Snackbar>
                      <Button
                               variant="contained"
                               sx={{ width: 'max-content' }}

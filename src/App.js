@@ -7,7 +7,8 @@ import HomeComponent from './home';
 import Movie from './details-page/detailspage';
 import FavoriteList from './details-page/FavoriteList';
 import PersonDetail from './details-page/PersonDetail';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {useEffect, useContext, useState} from 'react';
 //components
@@ -26,19 +27,27 @@ const [loading, setLoading] = useState(true);
   console.log('user');
     const { user } = useSelector((state) => state.user);
   useEffect(() => {
-      const fetchUserData = async () => {
-        const id = "6441a68499859e1107f4aff2"; // Replace this with a dynamic value when implementing authentication
+    const fetchUserData = async () => {
+      // Comment out or remove the hard-coded user ID
+       const id = "6441a68499859e1107f4aff2";
+
+      // Check if the user ID is not null before dispatching the fetchUserByIdThunk
+//      const id = false
+      if (id) {
         console.log('user2');
         const userData = await dispatch(fetchUserByIdThunk(id));
         console.log('user3');
         console.log(userData);
-            setLoading(false); // Set loading to false after fetching the user data
+        setLoading(false); // Set loading to false after fetching the user data
 
         // Do something with userData, e.g., store it in the Redux store or local state
-      };
+      } else {
+        setLoading(false); // Set loading to false as there is no user to fetch
+      }
+    };
 
-      fetchUserData();
-    }, [dispatch]);
+    fetchUserData();
+  }, [dispatch]);
   return (
     <>
     {loading ? (

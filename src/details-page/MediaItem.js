@@ -37,8 +37,15 @@ const MediaItem = ({ media, mediaType }) => {
 
   return (
 
-        <Link to={mediaType !== "people" ? `/details/${media.mediaId}` : `/person/${media.id}`}>
-
+        <Link
+          to={
+            mediaType !== "people"
+              ? media.mediaId
+                ? `/details/${media.mediaId}`
+                : `/details/${media.id}`
+              : `/person/${media.id}`
+          }
+        >
           <Box sx={{
             position: "relative",
           backgroundSize: "cover",
