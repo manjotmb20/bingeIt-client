@@ -33,10 +33,11 @@ const MediaItem = ({ media, mediaType }) => {
   console.log(title)
     console.log(releaseDate)
     console.log(rate)
+    console.log("in media item", media)
 
   return (
 
-        <Link to={mediaType !== "people" ? `/details/${media.id}` : `/person/${media.id}`}>
+        <Link to={mediaType !== "people" ? `/details/${media.mediaId}` : `/person/${media.id}`}>
 
           <Box sx={{
             position: "relative",

@@ -2,12 +2,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import MediaItem from "./MediaItem";
 import Container from "./Container";
 import favoriteApi from "./api/favorite.api";
 import { removeFavorite } from "./userSlice";
+import { useSelector, useDispatch } from 'react-redux';
 
 const FavoriteItem = ({ media, onRemoved }) => {
   const dispatch = useDispatch();
@@ -51,6 +51,7 @@ const FavoriteList = () => {
   const [filteredMedias, setFilteredMedias] = useState([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
+            const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -58,17 +59,28 @@ const FavoriteList = () => {
 
   useEffect(() => {
     const getFavorites = async () => {
+
+
+
+
+
       const { response, err } = await favoriteApi.getList();
 
+      console.log("user._id: ", user._id);
+      response.filter((e) => e.userId === user._id);
       console.log("here in get favorites");
       console.log("response: ", response);
 
 
+    const filteredResponse = response.filter((e) => e.userId === user._id);
+    console.log("filteredResponse: ", filteredResponse);
+
+
       if (err) toast.error(err.message);
       if (response) {
-        setCount(response.length);
-        setMedias([...response]);
-        setFilteredMedias([...response].splice(0, skip));
+        setCount(filteredResponse.length);
+        setMedias([...filteredResponse]);
+        setFilteredMedias([...filteredResponse].splice(0, skip));
       }
     };
 
@@ -86,6 +98,8 @@ const FavoriteList = () => {
     setFilteredMedias([...newMedias].splice(0, page * skip));
     setCount(count - 1);
   };
+
+  console.log("user: ", user);
 
   return (
     <Box sx={{ maxWidth: "1366px",

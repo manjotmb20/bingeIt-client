@@ -21,8 +21,7 @@ const ReviewItem = ({ review, onRemoved }) => {
         _id: "643d9a4bc7505a8c239555c6",
       };
 
-        const [user, setUser] = useState(newUser);
-
+  const { user } = useSelector((state) => state.user);
   const [onRequest, setOnRequest] = useState(false);
 
   const onRemove = async () => {
@@ -49,12 +48,11 @@ const ReviewItem = ({ review, onRemoved }) => {
     }}>
       <Stack direction="row" spacing={2}>
         {/* avatar */}
-        <TextAvatar text={user.displayName} />
         {/* avatar */}
         <Stack spacing={2} flexGrow={1}>
           <Stack spacing={1}>
             <Typography variant="h6" fontWeight="700" color="white">
-            <Link to={`/profile/${user.id}`} style={{textDecoration: "none", color: "white"}}>
+            <Link to={`/profile/${user._id}`} style={{textDecoration: "none", color: "white"}}>
               {review.author}
                 </Link>
             </Typography>
@@ -97,13 +95,19 @@ const MediaReview = ({ reviews, media, mediaType }) => {
         _id: "643d9a4bc7505a8c239555c6",
       };
 
-        const [user, setUser] = useState(newUser);
+  const { user } = useSelector((state) => state.user);
   const [listReviews, setListReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [page, setPage] = useState(1);
   const [onRequest, setOnRequest] = useState(false);
   const [content, setContent] = useState("");
   const [reviewCount, setReviewCount] = useState(0);
+
+  console.log("reviews:123 ", reviews.length);
+  console.log("reviews:1234 ", user)
+        console.log("reviews123456 ", filteredReviews);
+
+
 
   const skip = 4;
 
@@ -118,6 +122,8 @@ const MediaReview = ({ reviews, media, mediaType }) => {
     setOnRequest(true);
 
     const body = {
+      userId: user._id,
+      author: user.username,
       content,
       mediaId: media.id,
       mediaType,
@@ -156,7 +162,13 @@ const MediaReview = ({ reviews, media, mediaType }) => {
     setReviewCount(reviewCount - 1);
 
     toast.success("Remove review success");
+
   };
+
+
+  console.log("reviews1234567", (filteredReviews ? filteredReviews : []))
+
+
 
   return (
     <>
@@ -178,10 +190,9 @@ const MediaReview = ({ reviews, media, mediaType }) => {
           <>
             <Divider />
             <Stack direction="row" spacing={2}>
-              <TextAvatar text={user.displayName} />
               <Stack spacing={2} flexGrow={1}>
                 <Typography variant="h6" fontWeight="700">
-                <Link to={`/profile/${user.id}`} style={{textDecoration: "none", color: "white"}}>
+                <Link to={`/profile/${user.id}`} style={{textDecoration: "none", color: "white"}} >
                     {user.displayName}
                 </Link>
                 </Typography>
