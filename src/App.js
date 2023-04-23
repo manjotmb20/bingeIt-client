@@ -7,8 +7,6 @@ import HomeComponent from './home';
 import Movie from './details-page/detailspage';
 import FavoriteList from './details-page/FavoriteList';
 import PersonDetail from './details-page/PersonDetail';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ProfilePage from './profile-page/profilePage';
 
 import {useEffect, useContext, useState} from 'react';
