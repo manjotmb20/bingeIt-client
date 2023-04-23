@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 
 import YouTube from 'react-youtube';
 
-import { addFavorite, removeFavorite } from "./userSlice";
+import { addFavorite, removeFavorite } from "../userSlice";
 import CastSlide from "./CastSlide";
 import Container from "./Container";
 import RecommendSlide from "./RecommendSlide";
@@ -44,12 +44,13 @@ const Movie = () => {
             _id: "643d9a4bc7505a8c239555c6",
           };
 
-        const [user, setUser] = useState(newUser);
+            const { user } = useSelector((state) => state.user);
 
-            console.log("user")
-            console.log(user)
 
-            const [listFavorites,setFavourites] = useState([])
+
+            console.log("user", user);
+            console.log("user displayName", user? user : null);
+
 
 
 
@@ -60,6 +61,7 @@ const Movie = () => {
     const [genres, setGenres] = useState([]);
     const [onRequest, setOnRequest] = useState(false);
     const [showVideo, setShowVideo] = useState(false);
+    const [listFavorites, setListFavorites] = useState([]);
 
 
     const [isFavorite, setIsFavorite] = useState(false);
@@ -68,7 +70,7 @@ const Movie = () => {
 
     const [recommendations, setRecommendations] = useState([]);
 
-    const [reviews, setReviews] = useState();
+    const [reviews, setReviews] = useState([]);
 
       const dispatch = useDispatch();
 
@@ -110,23 +112,72 @@ const Movie = () => {
                             console.log("MediaDetail : " , response);
 
                     setMovie(response);
-                    setIsFavorite(response.isFavorite);
                     setGenres(response.genres.splice(0, 2));
                   }
 
                   if (err) toast.error(err.message);
                 };
 
+                const checkFavorite = (favoritesList) => {
+                  const foundFavorite = favoritesList.some((item) => item.mediaId === id);
+
+                  if (foundFavorite) {
+                    console.log("item22122", id);
+                    setIsFavorite(true);
+                    console.log("isFavorite-inside", isFavorite);
+                  }
+
+                };
+
+                const getFavorite = async () => {
+
+                    const userId  = user._id;
+                    console.log("userId in getFavorite ",userId)
+                    const { response2, err } = await favoriteApi.getFavoriteList({ userId });
+                    console.log("response2",response2)
+                    if (err) toast.error(err.message);
+
+                    if (response2) {
+                      checkFavorite(response2);
+                    }
+
+
+                }
+
+
+                const fetchReviews = async () => {
+                        const userReviewsResponse = await getUserReviews();
+                        const apiReviewsResponse = await getReviews();
+
+                        // Combine the user reviews and API reviews and remove duplicates
+                        const combinedReviews = [
+                            ...userReviewsResponse,
+                            ...apiReviewsResponse,
+                        ].filter(
+                            (review, index, self) =>
+                                index === self.findIndex((r) => r.id === review.id),
+                        );
+
+                        // Set the reviews state
+                        setReviews(combinedReviews);
+                    };
+
 
                 const getReviews = async () => {
-
-                    console.log("reviews")
-                    console.log(id)
                     const { response, err } = await mediaApi.getReviews({ mediaType, id });
-                    console.log("reviews",response)
                     if (err) toast.error(err.message);
-                    if (response) setReviews(response);
-                }
+                    if (response) return response.results;
+                    return [];
+                };
+
+                const getUserReviews = async () => {
+                    const userId = user._id;
+                    const mediaId = id;
+                    const { response, err } = await reviewApi.getList({ mediaType, mediaId });
+                    if (err) toast.error(err.message);
+                    if (response) return response;
+                    return [];
+                };
 
                 const getRecommendations = async () => {
                     const { response, err } = await mediaApi.getRecommendations({ mediaType, id });
@@ -152,12 +203,26 @@ const Movie = () => {
                     if (err) toast.error(err.message);
                 }
 
+                const setListFavorites = async () => {
+                    const { response, err } = await favoriteApi.getFavoriteList({ userId: user._id });
+                    if (err) toast.error(err.message);
+                    if (response) setListFavorites(response);
+                }
+
+
+
             window.scrollTo(0, 0);
             getMedia();
             getTrailer();
             getCasts();
+            getFavorite();
             getRecommendations();
-            getReviews();
+            fetchReviews();
+            setListFavorites();
+
+            return () => {
+                    setReviews([]);
+                };
 
         }, [id, dispatch])
 
@@ -171,15 +236,19 @@ const Movie = () => {
 
 
         }
-        console.log("user: ", user)
+        console.log("user123 : ", user._id)
 
 
 
 
 
+        console.log("isFavorite-outside", isFavorite);
 
 
         const onFavoriteClick = async () => {
+
+
+           console.log("user in onFavouritecClick: ", user)
 
 
            if (!user) {
@@ -188,21 +257,23 @@ const Movie = () => {
                 return;
 
            }
-           console.log("onrequest: ", onRequest)
 
             if (onRequest) return;
 
             if (isFavorite) {
+
+              console.log("isFav onRemoveFavorite");
               onRemoveFavorite();
               return;
             }
 
             setOnRequest(true);
 
-            console.log("onrequest: ", onRequest)
 
 
             const body = {
+
+              userId: user._id,
               mediaId: media.id,
               mediaTitle: media.title || media.name,
               mediaType: mediaType,
@@ -212,7 +283,6 @@ const Movie = () => {
 
             const { response, err } = await favoriteApi.add(body);
 
-            console.log("in favorite")
 
 
             setOnRequest(false);
@@ -221,48 +291,46 @@ const Movie = () => {
             if (response) {
 
 
+              console.log("response-onaddfavourite: ",response)
+
+
               dispatch(addFavorite(response));
               setIsFavorite(true);
               console.log("Add favorite success");
+                toast.success("Add favorite success");
+                console.log("Add favorite success");
             }
           };
 
             console.log("onrequest2: ", isFavorite)
 
-            console.log("onrequest1: ", listFavorites)
 
 
           const onRemoveFavorite = async () => {
 
 
-                              setIsFavorite(false);
 
-//              if (onRequest) return;
-//              setOnRequest(true);
+              if (onRequest) return;
+              setOnRequest(true);
+
+
+
+//              const listFavorites = await favoriteApi.getFavoriteList({ userId: user._id });
 //
-//              const favorite = listFavorites.find(e => e.mediaId.toString() === media.id.toString());
+////                const favorite = listFavorites.find((item) => item.mediaId === id);
+//
+//                console.log("favorite in removefavorite: ", listFavorites)
 //
 //
-//              const { response, err } = await favoriteApi.remove({ favoriteId: favorite.id });
+//                listFavorites.response2.map((item) => {
+//                    if (item.mediaId === id) {
+//                        console.log("item", item.id)
+//                        const { response, err } = favoriteApi.remove({ favoriteId: item.id });
 //
-//              setOnRequest(false);
-//
-//              if (err) toast.error(err.message);
-//              if (response) {
-//                dispatch(removeFavorite(favorite));
-//                setIsFavorite(false);
-//                toast.success("Remove favorite success");
-//              }
+//                    }
+//                } )
+
             };
-
-
-
-
-
-   console.log(reviews)
-           console.log("Genres: ", genres);
-
-
 
 
 
@@ -290,8 +358,7 @@ const Movie = () => {
           };
 
 
-
-
+          console.log("trailer123", listFavorites)
 
 
    return (
@@ -462,7 +529,7 @@ const Movie = () => {
                         {/* media reviews */}
                         {
                           reviews && reviews ? (
-                            <MediaReview reviews={reviews.results} media={media} mediaType={"movie"} />
+                            <MediaReview reviews={reviews} media={media} mediaType={"movie"} />
                           ) : null
                         }
                         {/* media reviews */}

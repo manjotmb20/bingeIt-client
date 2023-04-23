@@ -1,13 +1,15 @@
 import privateClient from "../private.client";
 
 const reviewEndpoints = {
-  list: "reviews",
+  list: ({mediaId}) => `reviews/${mediaId}`,
   add: "reviews",
   remove: ({ reviewId }) => `reviews/${reviewId}`
 };
 
 const reviewApi = {
   add: async ({
+    userId,
+    author,
     mediaId,
     mediaType,
     mediaTitle,
@@ -18,6 +20,8 @@ const reviewApi = {
       const response = await privateClient.post(
         reviewEndpoints.add,
         {
+          userId,
+          author,
           mediaId,
           mediaType,
           mediaTitle,
@@ -36,9 +40,12 @@ const reviewApi = {
       return { response };
     } catch (err) { return { err }; }
   },
-  getList: async () => {
+  getList: async ( {mediaId} ) => {
     try {
-      const response = await privateClient.get(reviewEndpoints.list);
+      console.log("in reviewApi.getList: ", reviewEndpoints.list);
+      console.log("in reviewApi.getList: ", reviewEndpoints.list( { mediaId } ));
+      const response = await privateClient.get(reviewEndpoints.list( { mediaId } ));
+
 
 
 

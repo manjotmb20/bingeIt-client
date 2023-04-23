@@ -32,7 +32,7 @@ export const userSlice = createSlice({
       state.listFavorites = [...state.listFavorites].filter(e => e.mediaId.toString() !== mediaId.toString());
     },
     addFavorite: (state, action) => {
-        console.log("in addFavorite");
+        console.log("in addFavorite reducer");
       state.listFavorites = [action.payload, ...state.listFavorites];
     }
   }

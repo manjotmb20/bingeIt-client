@@ -4,6 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import axios from "axios";
+import userReducer from "../userSlice";
 
 const initialState = {
   popularmovies: [],
@@ -115,6 +116,7 @@ const BingeItSlice = createSlice({
 export const store = configureStore({
   reducer: {
     bingeit: BingeItSlice.reducer,
+    user: userReducer,
   },
 });
 
