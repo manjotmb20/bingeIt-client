@@ -43,7 +43,7 @@ export const getTrendingThisWeek = createAsyncThunk(
     const {
       data: { results },
     } = await axios.get(
-      "https://api.themoviedb.org/3/trending/tv/week?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US&page=1"
+      "https://api.themoviedb.org/3/trending/movie/week?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US&page=1"
     );
     return results;
   }
@@ -81,7 +81,7 @@ export const getTopTVShows = createAsyncThunk(
     const {
       data: { results },
     } = await axios.get(
-      `https://api.themoviedb.org/3/tv/top_rated?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US&page=1`
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US&page=1`
     );
     return results
   }
