@@ -10,6 +10,11 @@
     width: 80%;
 }
 
+.custom-toast-error {
+  background-color: #ff5050 !important; /* Change the background color to a lighter red */
+  color: #ffffff !important; /* Change the text color to white */
+}
+
 .custom-text-field {
   background-color: white;
   border: 1px solid #ccc;

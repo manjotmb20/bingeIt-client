@@ -34,9 +34,9 @@ const ReviewItem = ({ review, onRemoved }) => {
     if (response) onRemoved(review.id);
   };
 
-  console.log("review")
+  console.log("review and user: ", review, user)
 
-  console.log(review)
+  console.log(review.id)
 
   return (
     <Box sx={{
@@ -52,10 +52,8 @@ const ReviewItem = ({ review, onRemoved }) => {
         <Stack spacing={2} flexGrow={1}>
           <Stack spacing={1}>
             <Typography variant="h6" fontWeight="700" color="white">
-            <Link to={`/profile/${user._id}`} style={{textDecoration: "none", color: "white"}}>
               {review.author}
-                </Link>
-            </Typography>
+           </Typography>
             <Typography variant="caption">
               {dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")}
             </Typography>
@@ -63,7 +61,7 @@ const ReviewItem = ({ review, onRemoved }) => {
           <Typography variant="body1" textAlign="justify">
             {review.content}
           </Typography>
-          {user && user.id === review.id && (
+          {user && user._id === review.userId && (
             <LoadingButton
               variant="contained"
               startIcon={<DeleteIcon />}
@@ -74,7 +72,9 @@ const ReviewItem = ({ review, onRemoved }) => {
                 position: { xs: "relative", md: "absolute" },
                 right: { xs: 0, md: "10px" },
                 marginTop: { xs: 2, md: 0 },
-                width: "max-content"
+                width: "max-content",
+                color:  "white",
+                backgroundColor: "red",
               }}
             >
               remove
@@ -122,7 +122,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
     setOnRequest(true);
 
     const body = {
-      userId: user._id,
+      userId: user ? user._id : null,
       author: user.username,
       content,
       mediaId: media.id,
