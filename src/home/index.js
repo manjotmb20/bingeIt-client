@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPopularMovies, getLatest, getTrailer, getTrendingThisWeek, getTopTVShows } from "../store";
 import SliderComponent from "./SliderComponent";
@@ -13,7 +13,7 @@ const HomeComponent = () => {
   const trending = useSelector((state) => state.bingeit.trending);
   const tvshows = useSelector((state) => state.bingeit.tvshows);
   const user = useSelector((state) => state.user.user);
-  
+
   useEffect(() => {
     dispatch(getLatest());
     dispatch(getPopularMovies());

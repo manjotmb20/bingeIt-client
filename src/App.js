@@ -8,6 +8,8 @@ import Movie from './details-page/detailspage';
 import FavoriteList from './details-page/FavoriteList';
 import PersonDetail from './details-page/PersonDetail';
 import ProfilePage from './profile-page/profilePage';
+import ProviderPage from './provider-list';
+
 
 import {useEffect, useContext, useState} from 'react';
 //components
@@ -28,7 +30,7 @@ const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchUserData = async () => {
       // Comment out or remove the hard-coded user ID
-       const id = "6441a68499859e1107f4aff2";
+       const id = "6445a5a36f86ab889158a13b";
 
       // Check if the user ID is not null before dispatching the fetchUserByIdThunk
 //      const id = false
@@ -63,6 +65,7 @@ const [loading, setLoading] = useState(true);
             <Route path="/search" element={<SearchPage/>} />
             <Route path="/browse" element={<BrowsePage/>} />
             <Route path="/profile" element={<ProfilePage/>} />
+            <Route path="/provider" element={<ProviderPage/>} />
         </Routes>
         </Router>
         )}
