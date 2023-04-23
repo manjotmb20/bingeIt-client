@@ -78,6 +78,8 @@ const Movie = () => {
 
     const { id } = useParams()
 
+
+
     const mediaType = "movie";
 
     console.log("id-video")
@@ -231,7 +233,7 @@ const Movie = () => {
 
 
         try {
-        console.log("media1234",trailer)
+        console.log("media1234",media)
         } catch (error) {
 
 
@@ -315,37 +317,26 @@ const Movie = () => {
 
 
 
-//              const listFavorites = await favoriteApi.getFavoriteList({ userId: user._id });
-//
-////                const favorite = listFavorites.find((item) => item.mediaId === id);
-//
-//                console.log("favorite in removefavorite: ", listFavorites)
-//
-//
-//                listFavorites.response2.map((item) => {
-//                    if (item.mediaId === id) {
-//                        console.log("item", item.id)
-//                        const { response, err } = favoriteApi.remove({ favoriteId: item.id });
-//
-//                    }
-//                } )
+              const listFavorites = await favoriteApi.getFavoriteList({ userId: user._id });
+
+//                const favorite = listFavorites.find((item) => item.mediaId === id);
+
+                console.log("favorite in removefavorite: ", listFavorites)
+
+
+                listFavorites.response2.map((item) => {
+                    if (item.mediaId === id) {
+                        console.log("item", item.id)
+                        const { response, err } = favoriteApi.remove({ favoriteId: item.id });
+
+                    }
+                } )
 
             };
 
 
 
-    const getTrailer = () => {
-            fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab`)
-                .then((res) => res.json())
-                .then((data) => {
-                    const ytTrailer = data.results.find(
-                        (video) => video.site === 'YouTube' && video.type === 'Trailer'
-                    );
-                    if (ytTrailer) {
-                        setTrailer(ytTrailer.key);
-                    }
-                });
-        };
+
 
     const playTrailer = () => {
             if (trailer) {
@@ -358,7 +349,7 @@ const Movie = () => {
           };
 
 
-          console.log("trailer123", listFavorites)
+          console.log("trailer123", media)
 
 
    return (

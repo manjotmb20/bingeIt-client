@@ -56,15 +56,7 @@ const MediaItem = ({ media, mediaType }) => {
                   <>
                   {/* check for favourite pending */}
 
-                  <FavoriteIcon
-                  color="primary"
-                                  sx={{
-                                    position: "absolute",
-                                    top: 2,
-                                    right: 2,
-                                    fontSize: "2rem"
-                                  }}
-                                />
+
 
                   <Box className="media-back-drop" sx={{
               opacity: { xs: 1, md: 0 },
