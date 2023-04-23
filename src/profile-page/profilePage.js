@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./profile.css";
+import FavoriteList from "../details-page/FavoriteList";
 
 const ProfilePage = () => {
   const [name, setName] = useState("John Doe");
@@ -77,6 +78,9 @@ const ProfilePage = () => {
             <p className="profile-text">Membership Information: {membershipInfo}</p>
           </div>
         )}
+      </div>
+      <div className="profile-favorites">
+        <FavoriteList />
       </div>
     </div>
   );
