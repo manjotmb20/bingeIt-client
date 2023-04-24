@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPopularMovies, getLatest, getTrailer, getTrendingThisWeek, getTopTVShows } from "../store";
 import SliderComponent from "./SliderComponent";
@@ -12,6 +12,8 @@ const HomeComponent = () => {
   const popularmovies = useSelector((state) => state.bingeit.popularmovies);
   const trending = useSelector((state) => state.bingeit.trending);
   const tvshows = useSelector((state) => state.bingeit.tvshows);
+  const user = useSelector((state) => state.user.user);
+
   useEffect(() => {
     dispatch(getLatest());
     dispatch(getPopularMovies());
@@ -24,6 +26,7 @@ const HomeComponent = () => {
   }, [latestMovieLoaded, latestMovie]);
   return (
     <div className="home-slider">
+      <h2 className="text-white">Hello {user.username},</h2>
       {latestMovieLoaded && (
         <div className="video-container">
           <div className="buttons-container">

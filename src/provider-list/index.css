@@ -1,0 +1,13 @@
+ .provider-name {
+     color: #333;
+     flex: 1;
+     padding: 10px;
+ }
+
+ body {
+     padding: 20px;
+ }
+
+ .text-white {
+     color: white;
+ }

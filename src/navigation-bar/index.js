@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -17,6 +18,7 @@ const NavigationBar = () => {
   const [showNotificationDropdown, setShowNotificationDropdown] =
     useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
   const handleSearchIconClick = () => {
@@ -57,8 +59,8 @@ const NavigationBar = () => {
     navigate("/favorites");
   };
 
-  const handleBrowseLanguagesClick = () => {
-    navigate("/browse-languages");
+  const handleProviderList = () => {
+    navigate("/provider");
   };
 
   return (
@@ -82,6 +84,11 @@ const NavigationBar = () => {
         <div className="item" onClick={handleMyListClick}>
           My Favorites
         </div>
+        {user.type === "PROVIDER" && (
+          <div className="item" onClick={handleProviderList}>
+            Provider List
+          </div>
+        )}
       </div>
       <div className="right-icons">
         {!showSearchBox && (

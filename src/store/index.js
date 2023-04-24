@@ -13,7 +13,8 @@ const initialState = {
   latest: {},
   trailer: null,
   trailerLoaded: false,
-  genres: []
+  genres: [],
+  providers:[]
 };
 
 export const getGenres = createAsyncThunk("bingeit/genres", async () => {
@@ -87,6 +88,18 @@ export const getTopTVShows = createAsyncThunk(
   }
 );
 
+export const getWatchProviders = createAsyncThunk(
+  "bingeit/providers",
+  async () => {
+    const {
+      data: { results },
+    } = await axios.get(
+      `https://api.themoviedb.org/3/watch/providers/regions?api_key=8ed01ac7fe8bdfc25206f1bcbd4d22ab&language=en-US`
+    );
+    return results
+  }
+);
+
 const BingeItSlice = createSlice({
   name: "bingeit",
   initialState,
@@ -109,6 +122,9 @@ const BingeItSlice = createSlice({
     });
     builder.addCase(getTopTVShows.fulfilled, (state, action) => {
       state.tvshows = action.payload;
+    });
+    builder.addCase(getWatchProviders.fulfilled, (state, action) => {
+      state.providers = action.payload;
     });
   },
 });
