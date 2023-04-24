@@ -10,6 +10,7 @@ import PersonDetail from './details-page/PersonDetail';
 import ProfilePage from './profile-page/profilePage';
 import ProviderPage from './provider-list';
 
+import ProfileDetail from './details-page/ProfileDetail';
 
 import {useEffect, useContext, useState} from 'react';
 //components
@@ -66,6 +67,7 @@ const [loading, setLoading] = useState(true);
             <Route path="/browse" element={<BrowsePage/>} />
             <Route path="/profile" element={<ProfilePage/>} />
             <Route path="/provider" element={<ProviderPage/>} />
+            <Route path="/profile/:id" element={<ProfileDetail/>} />
         </Routes>
         </Router>
         )}

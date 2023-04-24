@@ -51,9 +51,18 @@ const ReviewItem = ({ review, onRemoved }) => {
         {/* avatar */}
         <Stack spacing={2} flexGrow={1}>
           <Stack spacing={1}>
-            <Typography variant="h6" fontWeight="700" color="white">
-              {review.author}
-           </Typography>
+             <Typography variant="h6" fontWeight="700" color="white">
+                {review.userId ? (
+                  <Link
+                    to={`/profile/${review.userId}`}
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    {review.author}
+                  </Link>
+                ) : (
+                  <span>{review.author}</span>
+                )}
+              </Typography>
             <Typography variant="caption">
               {dayjs(review.createdAt).format("DD-MM-YYYY HH:mm:ss")}
             </Typography>
