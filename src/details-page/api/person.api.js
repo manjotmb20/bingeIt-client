@@ -2,7 +2,8 @@ import publicClient from "../public.client";
 
 const personEndpoints = {
   detail: ({ id }) => `person/${id}`,
-  medias: ({ id }) => `person/${id}/medias`
+  medias: ({ id }) => `person/${id}/medias`,
+  userDetail: ({ id }) => `api/users/${id}`
 };
 
 const personApi = {
@@ -19,7 +20,14 @@ const personApi = {
 
       return { response };
     } catch (err) { return { err }; }
-  }
+  },
+    userDetail: async ({ id }) => {
+    try {
+      const response = await publicClient.get(personEndpoints.userDetail({ id }));
+
+      return { response };
+    } catch (err) { return { err }; }
+    }
 };
 
 export default personApi;
