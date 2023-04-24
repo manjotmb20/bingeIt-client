@@ -84,7 +84,7 @@ const NavigationBar = () => {
         <div className="item" onClick={handleMyListClick}>
           My Favorites
         </div>
-        {user.type === "PROVIDER" && (
+        {user && user.type === "PROVIDER" && (
           <div className="item" onClick={handleProviderList}>
             Provider List
           </div>
