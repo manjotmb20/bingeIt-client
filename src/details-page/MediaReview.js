@@ -21,7 +21,7 @@ const ReviewItem = ({ review, onRemoved }) => {
         _id: "643d9a4bc7505a8c239555c6",
       };
 
-  const { user } = useSelector((state) => state.user);
+            const user  = useSelector((state) => state.user);
   const [onRequest, setOnRequest] = useState(false);
 
   const onRemove = async () => {
@@ -104,7 +104,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
         _id: "643d9a4bc7505a8c239555c6",
       };
 
-  const { user } = useSelector((state) => state.user);
+            const user  = useSelector((state) => state.user);
   const [listReviews, setListReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [page, setPage] = useState(1);

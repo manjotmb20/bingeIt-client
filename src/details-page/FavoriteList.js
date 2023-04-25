@@ -51,7 +51,7 @@ const FavoriteList = () => {
   const [filteredMedias, setFilteredMedias] = useState([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
-            const { user } = useSelector((state) => state.user);
+            const  user  = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -66,7 +66,7 @@ const FavoriteList = () => {
 
       const { response, err } = await favoriteApi.getList();
 
-      console.log("user._id: ", user._id);
+      console.log("user._id: ", user);
       response.filter((e) => e.userId === user._id);
       console.log("here in get favorites");
       console.log("response: ", response);

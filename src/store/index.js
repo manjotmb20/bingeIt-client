@@ -129,11 +129,13 @@ const BingeItSlice = createSlice({
   },
 });
 
-export const store = configureStore({
-  reducer: {
-    bingeit: BingeItSlice.reducer,
-    user: userReducer,
-  },
-});
+//export const store = configureStore({
+//  reducer: {
+//    bingeit: BingeItSlice.reducer,
+//    user: userReducer,
+//  },
+//});
+
 
 export const { setGenres, setMovies } = BingeItSlice.actions;
+export default BingeItSlice.reducer;

@@ -46,11 +46,11 @@ const Movie = () => {
             _id: "643d9a4bc7505a8c239555c6",
           };
 
-            const { user } = useSelector((state) => state.user);
+            const user  = useSelector((state) => state.user);
 
 
 
-            console.log("user", user);
+            console.log("user in details", user);
             console.log("user displayName", user? user : null);
 
 
@@ -231,6 +231,7 @@ const Movie = () => {
 
             return () => {
                     setReviews([]);
+                    setIsFavorite(false);
                 };
 
         }, [id, dispatch])
