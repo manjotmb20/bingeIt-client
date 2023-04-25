@@ -9,8 +9,8 @@ const BrowsePage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [searchKeywords, setSearchKeywords] = useState([]);
   const query = searchParams.get("query");
-  const NORMAL = `https://api.themoviedb.org/3/${query}/top_rated?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&language=en-US`
-  const COLLECTIONS =  `https://api.themoviedb.org/3/search/multi?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=${query}`
+  const NORMAL = `https://api.themoviedb.org/3/movie/top_rated?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&language=en-US`
+  const COLLECTIONS =  `https://api.themoviedb.org/3/search/multi?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&query=movie`
   const API = query === "collection" ? COLLECTIONS : NORMAL
   useEffect(() => {
     fetch(API)
