@@ -12,7 +12,7 @@ const HomeComponent = () => {
   const popularmovies = useSelector((state) => state.bingeit.popularmovies);
   const trending = useSelector((state) => state.bingeit.trending);
   const tvshows = useSelector((state) => state.bingeit.tvshows);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     dispatch(getLatest());
