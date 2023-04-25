@@ -270,7 +270,7 @@ const Movie = () => {
            console.log("user in onFavouritecClick: ", user)
 
 
-           if (!user) {
+           if (user.loggedIn==="false") {
 
                 handleSnackbarOpen();
                 toast.error("Please login to add favorite", {

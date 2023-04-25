@@ -11,22 +11,7 @@ const privateClient = axios.create({
 });
 
 
-async function authenticate(username, password) {
-  try {
-    const response = await axios.post(`${baseURL}/user/signin`, {
-      username,
-      password,
-    });
 
-    const token = response.data.token;
-    localStorage.setItem("actkn", token);
-    console.log("Token stored:", token);
-  } catch (error) {
-    console.error("Authentication failed:", error);
-  }
-}
-
-console.log(authenticate("manjot1111", "manjot1234"));
 
 
 console.log("privateClient", privateClient);

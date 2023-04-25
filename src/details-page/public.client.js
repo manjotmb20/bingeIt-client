@@ -14,24 +14,6 @@ const publicClient = axios.create({
 
 
 
-async function authenticate(username, password) {
-  try {
-    console.log("here-publicclient");
-    console.log(`${baseURL}/user/signin`)
-    const response = await axios.post(`${baseURL}/user/signin`, {
-      username,
-      password,
-    });
-
-    const token = response.data.token;
-    localStorage.setItem("actkn", token);
-    console.log("Token stored:", token);
-  } catch (error) {
-    console.error("Authentzication failed:", error);
-  }
-}
-
-console.log(authenticate("manjot1111", "manjot1234"));
 
 publicClient.interceptors.request.use(async config => {
 

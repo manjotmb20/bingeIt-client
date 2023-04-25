@@ -70,7 +70,7 @@ const ReviewItem = ({ review, onRemoved }) => {
           <Typography variant="body1" textAlign="justify">
             {review.content}
           </Typography>
-          {user && user._id === review.userId && (
+          {user.loggedIn === "true" && user._id === review.userId && (
             <LoadingButton
               variant="contained"
               startIcon={<DeleteIcon />}
@@ -195,7 +195,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
             <Button onClick={onLoadMore}>load more</Button>
           )}
         </Stack>
-        {user && (
+        {user.loggedIn === "true" && (
           <>
             <Divider />
             <Stack direction="row" spacing={2}>

@@ -32,6 +32,7 @@ const Login = () => {
                 console.log(res)
                                     // dispatch(setLoggedInUser());
                 //return <Navigate replace to="/" />
+                localStorage.setItem("user", JSON.stringify(res.payload));
                 //navigate("/");
                 navigate("/");
             }
