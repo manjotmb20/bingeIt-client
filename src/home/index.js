@@ -26,7 +26,7 @@ const HomeComponent = () => {
   }, [latestMovieLoaded, latestMovie]);
   return (
     <div className="home-slider">
-      {user && (
+      {user && user.username && (
         <h6 className="text-white display-6">Hello {user.username},</h6>
       )}
       {latestMovieLoaded && (
