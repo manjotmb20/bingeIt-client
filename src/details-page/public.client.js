@@ -3,7 +3,7 @@ import queryString from "query-string";
 
 
 
-const baseURL = "http://localhost:5004/";
+const baseURL = "https://bingeit-server.onrender.com";
 
 const publicClient = axios.create({
   baseURL,

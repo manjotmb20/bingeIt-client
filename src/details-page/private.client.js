@@ -1,7 +1,7 @@
 import axios from "axios";
 import queryString from "query-string";
 
-const baseURL = "http://localhost:5004/";
+const baseURL = "https://bingeit-server.onrender.com";
 
 const privateClient = axios.create({
   baseURL,

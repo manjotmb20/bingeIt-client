@@ -11,7 +11,7 @@ const ProfileDetail = () => {
   const [person, setPerson] = useState();
   const dispatch = useDispatch();
 
-  console.log("personId")
+  console.log("personId: ", id)
     console.log(id)
 
   useEffect(() => {
