@@ -23,8 +23,6 @@ const RefreshLogout = () => {
             .then((res) => {
                 if (!res.payload ) {
                     console.log("logged out");
-
-                    //alert("Invalid credentials! Please enter valid credentials!");
                 }
                 else{
                     console.log("Logged out successfully!!!")
