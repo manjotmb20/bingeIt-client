@@ -3,7 +3,8 @@ import axios from 'axios';
 //const USERS_API = `${API_BASE}/tuits`;
 //const USERS_API = 'http://localhost:4000/api/users';
 //const USERS_API = 'https://tuiter-node-server-app-6npb.onrender.com/api/users';
-const USERS_API = 'http://localhost:5004/api/users';
+//const USERS_API = 'http://localhost:5004/api/users';
+const USERS_API = 'https://webdev-project-node.onrender.com/api/users'
 export const findAllUsers = async () => {
     const response = await axios.get(USERS_API);
     const users = response.data;

@@ -56,10 +56,14 @@ const usersSlice = createSlice({name: 'users',
             console.log("INSIDE USER REDUCER ====> ", state.user)
             return state;
         },
-        logout(state, action) {
+        logout(state) {
             state = { loggedIn: "false", currentUser: templateUser,
                 id:"",
-                username:""};
+                username:"",
+                password:"",
+                users: [],
+                loading: false
+            };
             console.log("State: ", state);
         }
     },
@@ -97,8 +101,11 @@ const usersSlice = createSlice({name: 'users',
             state.loading = true
             state.currentUser = templateUser
             state.username=""
+            state.id=""
             state.password=""
+            state.loggedIn="false"
             console.log("pending")
+            state.users= []
         },
         [loginUserThunk.fulfilled]: (state, {payload}) => {
             state.loading = false
@@ -121,11 +128,12 @@ const usersSlice = createSlice({name: 'users',
         },
         [loginUserThunk.rejected]: (state) => {
             state.loading = false
+            state.id=""
             state.currentUser= templateUser
             state.username=""
             state.password=""
             console.log("rejected")
-
+            state.users= []
         },
 
 

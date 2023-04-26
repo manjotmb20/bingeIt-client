@@ -63,6 +63,10 @@ const NavigationBar = () => {
     navigate("/provider");
   };
 
+  const handleAdminList = () => {
+    navigate("/adminShow");
+  };
+
   return (
     <div className="navbar_main">
       <div className="netflix_logo">
@@ -89,6 +93,12 @@ const NavigationBar = () => {
             Provider List
           </div>
         )}
+        {user && user.type === "admin" && (
+            <div className="item" onClick={handleAdminList}>
+              Provider List
+            </div>
+        )}
+
       </div>
       <div className="right-icons">
         {!showSearchBox && (

@@ -25,6 +25,7 @@ import BrowsePage  from './browse-page';
 import UsersList from "./users/adminComponent";
 import Register from './users/register'
 import Login from "./users/login";
+import RefreshLogout from "./users/refreshLogout";
 
 function App() {
 const [loading, setLoading] = useState(false);
@@ -63,6 +64,8 @@ const [loading, setLoading] = useState(false);
                      <Route path="/register" element={<Register/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/adminShow" element={<UsersList/>}/>
+
+          <Route path="/refresh" element={<RefreshLogout/>}/>
         </Routes>
         </Router>
         )}
